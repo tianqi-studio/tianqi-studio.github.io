@@ -1,0 +1,11 @@
+/* 全站横幅背景图（Butterfly 5.7.2：统一给 #page-header 挂一张图，全站共用同一 URL，浏览器只下载一次） */
+#page-header:not(.not-top-img) {
+  background-image: url('/img/banner.jpg');
+}
+
+/* 移动端关闭 fixed 附件，避免 iOS/安卓滚动时背景错位与额外绘制开销 */
+@media screen and (max-width: 768px) {
+  #page-header.full_page {
+    background-attachment: scroll;
+  }
+}

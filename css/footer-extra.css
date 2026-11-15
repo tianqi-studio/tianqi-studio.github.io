@@ -1,0 +1,43 @@
+/* 页脚里的所有链接：蓝底上悬浮时仍是深蓝会隐形，统一压回浅色 */
+#footer a,
+#footer a:hover,
+.footer-custom-text a,
+.footer_custom_text a {
+  color: #fff !important;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, .45);
+  padding-bottom: 1px;
+  transition: color .2s, border-color .2s;
+}
+
+#footer a:hover,
+.footer_custom_text a:hover {
+  color: #ffe6a7 !important;
+  border-bottom-color: #ffe6a7;
+}
+
+/* 页脚附加内容：运行时间 + 萌ICP备 */
+#footer-runtime,
+#footer-icp {
+  line-height: 1.9;
+}
+
+#footer-runtime .runtime-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+#footer-icp {
+  font-size: 13px;
+  opacity: .9;
+}
+
+#footer-icp a:hover {
+  opacity: 1;
+}
+
+#footer-icp img {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 4px;
+}

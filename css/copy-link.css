@@ -1,0 +1,54 @@
+/* 「复制链接」按钮样式：与 sharejs 图标同尺寸、同排 */
+.post-share .social-share {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.post-share .copy-link-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin: 0 4px;
+  padding: 0;
+  border-radius: 50%;
+  color: #6a737d;
+  background: #eef2f5;
+  cursor: pointer;
+  transition: color .2s, background .2s, transform .2s;
+}
+
+.post-share .copy-link-btn:hover {
+  color: #fff;
+  background: #49b1f5;
+  transform: translateY(-1px);
+}
+
+.post-share .copy-link-btn svg {
+  display: block;
+}
+
+.post-share .copy-link-tip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, -6px);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: nowrap;
+  color: #fff;
+  background: rgba(0, 0, 0, .75);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+
+.post-share .copy-link-tip.show {
+  opacity: 1;
+}
