@@ -882,4 +882,107 @@
   } else {
     window.loadOtherComment = loadGiscus
   }
-})()</script></div><script src="/js/runtime.js" defer></script><script src="/js/copy-link.js" defer></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="富强,民主,文明,和谐,自由,平等,公正,法治,爱国,敬业,诚信,友善" data-fontsize="15px" data-random="true" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.2"></script></div></div></body></html>
+})()</script></div><script src="/js/runtime.js" defer></script><script src="/js/copy-link.js" defer></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/click-show-text.min.js" data-mobile="false" data-text="富强,民主,文明,和谐,自由,平等,公正,法治,爱国,敬业,诚信,友善" data-fontsize="15px" data-random="true" async="async"></script><script>(() => {
+  const option = {"data-domains":"tianqi-studio.github.io"}
+  const config = {"site_uv":false,"site_pv":false,"page_pv":false,"token":null}
+
+  const runTrack = () => {
+    if (typeof umami !== 'undefined' && typeof umami.track === 'function') {
+      umami.track(props => ({ ...props, url: window.location.pathname, title: GLOBAL_CONFIG_SITE.title }))
+    } else {
+      console.warn('Umami Analytics: umami.track is not available')
+    }
+  }
+
+  const loadUmamiJS = () => {
+    btf.getScript('https://cloud.umami.is/script.js', {
+      'data-website-id': 'a81d347c-b297-44e5-a03b-06d1d4904ae4',
+      'data-auto-track': 'false',
+      ...option
+    }).then(() => {
+      runTrack()
+    }).catch(error => {
+      console.error('Umami Analytics: Error loading script', error)
+    })
+  }
+
+  const extractValue = stat => (stat && typeof stat.value !== 'undefined') ? stat.value : stat
+
+  const getData = async (isPost, path = window.location.pathname) => {
+    const now = Date.now()
+    const pathQuery = isPost ? `&url=${path}&path=${path}` : ''
+    const headers = {
+      'Accept': 'application/json',
+      [false ? 'Authorization' : 'x-umami-api-key']: false ? `Bearer ${config.token}` : config.token
+    }
+
+    const res = await fetch(`https://api.umami.is/v1/websites/a81d347c-b297-44e5-a03b-06d1d4904ae4/stats?startAt=0000000000&endAt=${now}${pathQuery}`, {
+      method: 'GET',
+      headers,
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`)
+    }
+
+    return await res.json()
+  }
+
+  const insertData = async () => {
+    try {
+      const tasks = []
+
+      if (GLOBAL_CONFIG_SITE.pageType === 'post' && config.page_pv) {
+        tasks.push((async () => {
+          const pagePV = document.getElementById('umamiPV')
+          if (pagePV) {
+            const path = pagePV.dataset.path || window.location.pathname
+            const data = await getData(true, path)
+            if (data && data.pageviews) {
+              pagePV.textContent = extractValue(data.pageviews)
+            } else {
+              console.warn('Umami Analytics: Invalid page view data received')
+            }
+          }
+        })())
+      }
+
+      const siteUV = config.site_uv ? document.getElementById('umami-site-uv') : null
+      const sitePV = config.site_pv ? document.getElementById('umami-site-pv') : null
+
+      if (siteUV || sitePV) {
+        tasks.push((async () => {
+          const data = await getData(false)
+
+          if (siteUV && data && data.visitors) {
+            siteUV.textContent = extractValue(data.visitors)
+          } else if (siteUV) {
+            console.warn('Umami Analytics: Invalid site UV data received')
+          }
+
+          if (sitePV && data && data.pageviews) {
+            sitePV.textContent = extractValue(data.pageviews)
+          } else if (sitePV) {
+            console.warn('Umami Analytics: Invalid site PV data received')
+          }
+        })())
+      }
+
+      await Promise.all(tasks)
+    } catch (error) {
+      console.error('Umami Analytics: Failed to insert data', error)
+    }
+  }
+
+  btf.addGlobalFn('pjaxComplete', runTrack, 'umami_analytics_run_track')
+  btf.addGlobalFn('pjaxComplete', insertData, 'umami_analytics_insert')
+
+  loadUmamiJS()
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', insertData)
+  } else {
+    setTimeout(insertData, 100)
+  }
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.2"></script></div></div></body></html>
