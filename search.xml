@@ -1,6 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>免费云电脑</title>
+    <url>/2026/11/15/free-cloud-computer/</url>
+    <content><![CDATA[<p><strong>我为大家提供了免费的云电脑，请使用uu远程连接</strong></p>
+<span id="more"></span>
+
+<div class="note danger flat"><p>请勿运行任何病毒与可能危害电脑的程序，请勿删除任何个人与系统文件</p>
+</div>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><blockquote>
+<p>采用的是虚拟机，性能较弱</p>
+</blockquote>
+<p><strong>内存：</strong> 16GB<br><strong>CPU：</strong> i7-11370H<br><strong>GPU：</strong> RTX 4060 Laptop<br><strong>硬盘：</strong> 60GB</p>
+<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><p><strong>系统版本：</strong> Windows 10 专业工作站版（已激活）<br><strong>软件：</strong> 覆盖常用软件</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><strong>可用时间：</strong> 周末&#x2F;节假日 下午3:00~晚上8:00 <em>（可能会有波动）</em><br><strong>设备码：</strong><br><strong>密码：</strong> </p>
+]]></content>
+      <categories>
+        <category>服务</category>
+      </categories>
+      <tags>
+        <tag>免费</tag>
+        <tag>云电脑</tag>
+        <tag>电脑</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>WinUI 3应用收纳器</title>
+    <url>/2026/11/21/appmanager-winui3-app-launcher/</url>
+    <content><![CDATA[<div class="note warning flat"><p>含大肥鱼生成内容</p>
+</div>
+
+<p>我写这个项目的起点很朴素：要打开某个软件，在桌面里找起来太烦。</p>
+<p>Windows自带的东西其实也有，虽然Win+S搜索能用，但一遇到像我一样超多的应用就吃力了。</p>
+<p>因此我让大肥鱼写了个软件：应用收纳器</p>
+<span id="more"></span>
+
+<h2 id="能做什么"><a href="#能做什么" class="headerlink" title="能做什么"></a>能做什么</h2><ul>
+<li>扫描开始菜单里的快捷方式和 <code>shell:AppsFolder</code> 里的商店应用，自动去重，按名称粗分类</li>
+<li>分类能自己建，一个应用也可以同时属于多个分类</li>
+<li>搜索框边打边筛，按回车直接启动第一个结果</li>
+<li>全局快捷键默认 <code>Ctrl+R</code>，设置里能换成 <code>Alt+R</code> 或 <code>Ctrl+Space</code></li>
+<li>托盘轻量常驻，启动后不主动弹窗；右键托盘有设置和退出</li>
+<li>三种主题：暗色、浅色、跟随系统</li>
+<li>单实例，重复启动只会把已有那个唤出来</li>
+<li>数据是一个JSON，存在 <code>%LOCALAPPDATA%\LiquidAppManager\appdata.json</code></li>
+</ul>
+<p>按下快捷键后窗口从屏幕底部弹出，点外面就收起。</p>
+<h2 id="代码怎么分层"><a href="#代码怎么分层" class="headerlink" title="代码怎么分层"></a>代码怎么分层</h2><p>四个目录，职责基本不重叠：</p>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>职责</th>
+<th>典型文件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>根目录</td>
+<td>应用生命周期、主窗口</td>
+<td><code>App.xaml.cs</code>、<code>MainWindow.xaml.cs</code></td>
+</tr>
+<tr>
+<td>Services</td>
+<td>扫描、图标、数据、主题、托盘、热键</td>
+<td><code>AppScanService.cs</code>、<code>IconService.cs</code></td>
+</tr>
+<tr>
+<td>Native</td>
+<td>Win32 &#x2F; DWM &#x2F; 托盘结构的 P&#x2F;Invoke</td>
+<td><code>NativeMethods.cs</code>、<code>NativeMessageWindow.cs</code></td>
+</tr>
+<tr>
+<td>Views</td>
+<td>设置页和应用管理页</td>
+<td><code>SettingsView</code>、<code>ManageAppsView</code></td>
+</tr>
+</tbody></table>
+<p>依赖是手工传的。<code>App.OnLaunched</code> 里 new 出 repository 和四个 service，再一起塞进 <code>MainWindow</code> 的构造函数。没上 DI 容器，整个程序只有一个窗口，为这点依赖引一个容器不划算。</p>
+<p>主窗口不负责自己的生命周期。它被创建完就 <code>Hide()</code>，什么时候显示由托盘和热键决定。真正的退出走 <code>App.ExitApplication()</code>，它依次拆托盘、拆热键、存盘，最后才把 <code>_allowClose</code> 置位允许窗口关闭。这个顺序如果反过来，会出现托盘图标残留，或者数据还没落地进程就没了。</p>
+<h2 id="然后呢"><a href="#然后呢" class="headerlink" title="然后呢"></a>然后呢</h2><h3 id="扫描为什么必须单开一条STA线程"><a href="#扫描为什么必须单开一条STA线程" class="headerlink" title="扫描为什么必须单开一条STA线程"></a>扫描为什么必须单开一条STA线程</h3><p>读快捷方式用的是 <code>WScript.Shell</code>，遍历商店应用用的是 <code>Shell.Application</code>。这两个都是 STA 的 COM 组件，在 WinUI 主线程上初始化它们，会因为公寓模型冲突偶发 <code>0x8001010E</code>（调用线程必须是 STA）。</p>
+<p>所以扫描逻辑跑在一条专用 STA 线程上，结果通过 <code>TaskCompletionSource</code> 传回来：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="title">Task</span>&lt;<span class="title">T</span>&gt; <span class="title">RunOnStaThreadAsync</span>&lt;<span class="title">T</span>&gt;(<span class="params">Func&lt;T&gt; action, CancellationToken cancellationToken</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> tcs = <span class="keyword">new</span> TaskCompletionSource&lt;T&gt;(TaskCreationOptions.RunContinuationsAsynchronously);</span><br><span class="line">    <span class="keyword">var</span> thread = <span class="keyword">new</span> Thread(() =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123; tcs.TrySetResult(action()); &#125;</span><br><span class="line">        <span class="keyword">catch</span> (OperationCanceledException) &#123; tcs.TrySetCanceled(cancellationToken); &#125;</span><br><span class="line">        <span class="keyword">catch</span> (Exception ex) &#123; tcs.TrySetException(ex); &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    &#123; IsBackground = <span class="literal">true</span>, Name = <span class="string">&quot;AppManager.Scanner&quot;</span> &#125;;</span><br><span class="line"></span><br><span class="line">    thread.SetApartmentState(ApartmentState.STA);</span><br><span class="line">    thread.Start();</span><br><span class="line">    <span class="keyword">return</span> tcs.Task;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>商店应用的识别不复杂，但有个容易踩的坑：<code>AppsFolder</code> 里只有 Path 带感叹号的才是可见应用，格式是 <code>包族名!应用ID</code>，比如 <code>Microsoft.WindowsCalculator_8wekyb3d8bbwe!App</code>。不带感叹号的是文件夹或系统项，直接跳过。</p>
+<p>拿到 AUMID 还要找图标。<code>AppxManifest.xml</code> 里的 <code>Square44x44Logo</code> 只是相对路径，实际目录里躺着 <code>targetsize-16</code> 到 <code>targetsize-256</code> 十几个变体，还有 <code>altform-unplated</code>、<code>contrast-black</code> 这些特殊版本。选错的话，暗色任务栏上会出现一个白底方块。这里的做法是按文件名打分，<code>targetsize-256</code> 且不带 unplated 的排最前，依次往下，<code>altform-unplated</code> 垫底。</p>
+<h3 id="图标缓存为什么会失效"><a href="#图标缓存为什么会失效" class="headerlink" title="图标缓存为什么会失效"></a>图标缓存为什么会失效</h3><p>第一版缓存很简单：把「启动目标 + 图标来源」拼成字符串，算 SHA256，取前 12 字节当文件名，存成 PNG，命中就直接用。</p>
+<p>这套东西跑了半个月没出事，直到我把某个软件的图标换了，界面上还是旧的。原因很清楚：缓存键里只有路径，没有文件内容。路径没变，键就没变，永远命中第一次生成的那张图。<del>大肥鱼！</del></p>
+<p>修法是往键里加源文件的最后写入时间：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">GetCachePath</span>(<span class="params">AppItem app</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> key = <span class="string">$&quot;<span class="subst">&#123;app.Source&#125;</span>|<span class="subst">&#123;app.DedupeKey ?? app.LaunchTarget&#125;</span>|<span class="subst">&#123;app.IconSourceHint&#125;</span>|<span class="subst">&#123;GetSourceStamp(app)&#125;</span>&quot;</span>;</span><br><span class="line">    <span class="keyword">return</span> CachePathCache.GetOrAdd(key, <span class="keyword">static</span> k =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> hash = SHA256.HashData(Encoding.UTF8.GetBytes(k));</span><br><span class="line">        <span class="keyword">return</span> Path.Combine(AppPaths.IconsDirectory, Convert.ToHexString(hash, <span class="number">0</span>, <span class="number">12</span>).ToLowerInvariant() + <span class="string">&quot;.png&quot;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">GetSourceStamp</span>(<span class="params">AppItem app</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrWhiteSpace(app.IconSourceHint) &amp;&amp; File.Exists(app.IconSourceHint))</span><br><span class="line">        <span class="keyword">return</span> File.GetLastWriteTimeUtc(app.IconSourceHint).Ticks.ToString();</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;0&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>键变了，新图会重新生成。但旧 PNG 不会自己消失，所以提取成功后顺手删掉这个应用的上一个缓存文件。删除前会判断目标确实位于本应用的 icons 目录里，免得误删系统图标。</p>
+<p>这条路不是所有文件都通。少数开始菜单项落在 ACL 受限的目录里（比如安装程序写进 ProgramData 的工具组），<code>StorageFile.GetFileFromPathAsync</code> 会直接抛 <code>UnauthorizedAccessException</code>。现在的处理是记一条 Info 后跳过，界面显示占位图标，不把它当成错误刷屏。</p>
+<h3 id="弹出动画：为什么不用-Storyboard"><a href="#弹出动画：为什么不用-Storyboard" class="headerlink" title="弹出动画：为什么不用 Storyboard"></a>弹出动画：为什么不用 Storyboard</h3><p>WinUI 的 Storyboard 动的是控件属性，动不了窗口在屏幕上的位置。而面板要从屏幕下沿滑上来，动的是窗口本身。</p>
+<p>所以这里没有 XAML 动画，就是一个 <code>DispatcherQueueTimer</code>，15 毫秒一帧，自己算 Y 坐标，然后 <code>SetWindowPos</code>：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> eased = _animationIsShowing</span><br><span class="line">    ? <span class="number">1</span> - Math.Pow(<span class="number">1</span> - progress, <span class="number">3</span>)   <span class="comment">// 展开用 ease-out cubic</span></span><br><span class="line">    : progress * progress;            <span class="comment">// 收起用 ease-in quad</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> y = (<span class="built_in">int</span>)Math.Round(_animationFromY + (_animationToY - _animationFromY) * eased);</span><br><span class="line">NativeMethods.SetWindowPos(_hwnd, IntPtr.Zero, _animationLeft, y,</span><br><span class="line">    _animationWidth, _animationHeight,</span><br><span class="line">    NativeMethods.SWP_NOZORDER | NativeMethods.SWP_NOACTIVATE);</span><br></pre></td></tr></table></figure>
+
+<p>320 毫秒展开，230 毫秒收起。这两个数是反复试出来的，再快有跳帧感，再慢就觉得拖沓。</p>
+<p>窗口位置按光标所在显示器的工作区算，不是主屏。多屏且缩放不一致时这条很关键：1080p@100% 和 4K@150% 拼在一起，用固定像素算出来的坐标会跑到屏幕外面。所以定位前先 <code>MonitorFromPoint</code> 拿显示器，再 <code>GetDpiForMonitor</code> 拿缩放比，最后换算成物理像素。</p>
+<h3 id="窗口外观：两套圆角，一条去不掉的白边"><a href="#窗口外观：两套圆角，一条去不掉的白边" class="headerlink" title="窗口外观：两套圆角，一条去不掉的白边"></a>窗口外观：两套圆角，一条去不掉的白边</h3><p>Win11 的圆角是 DWM 给的，<code>DwmSetWindowAttribute(DWMWA_WINDOW_CORNER_PREFERENCE)</code> 设成 <code>DWMWCP_ROUND</code> 就行。Win10 没有这套，只能自己 <code>CreateRoundRectRgn</code> 加 <code>SetWindowRgn</code> 裁出来。</p>
+<p>两套都实现之后发现一个细节：Win11 上如果同时用 DWM 圆角和 <code>SetWindowRgn</code>，会出现两种弧度的圆角叠在一起，Mica 材质的边缘从缝里透出来。所以现在按系统版本二选一，不做叠加。</p>
+<p>有一条白边我没能去掉。</p>
+<p>Win11 22H2 之后，DWM 会在窗口四周画一圈 1px 的边框。文档里有个 <code>DWMWA_VISIBLE_FRAME_BORDER_THICKNESS</code>，看着像是能设成 0，实际调用返回 <code>E_INVALIDARG</code>（0x80070057），这个属性只读。把 <code>DWMWA_BORDER_COLOR</code> 设成 <code>DWMWA_COLOR_NONE</code> 能让它变透明，但 1px 的空间还在，诊断日志里至今能看到 <code>dwmBorder=1px</code>。</p>
+<p>想彻底消掉得改窗口样式、自己画边框，代价和收益不成比例，就先留着。</p>
+<p><del>（这个大肥鱼改了好几次都改不好(╯▔皿▔)╯）</del></p>
+<h2 id="问题呢"><a href="#问题呢" class="headerlink" title="问题呢"></a>问题呢</h2><h3 id="裸-R-键会吞掉整个系统的-R"><a href="#裸-R-键会吞掉整个系统的-R" class="headerlink" title="裸 R 键会吞掉整个系统的 R"></a>裸 R 键会吞掉整个系统的 R</h3><p>第一版的热键预设里有个「R」，注册时不带任何修饰键。<code>RegisterHotKey</code> 成功之后，所有程序都收不到 R 键了，在记事本里打不出字母 r。这个预设已经删掉，老数据加载时会自动换回 <code>Ctrl+R</code>。枚举值还留着，因为旧 JSON 里存的是字符串 <code>&quot;BareR&quot;</code>，直接删会让反序列化失败，进而触发数据重建。</p>
+<h3 id="NIF-SHOWTIP-不是设了就生效"><a href="#NIF-SHOWTIP-不是设了就生效" class="headerlink" title="NIF_SHOWTIP 不是设了就生效"></a>NIF_SHOWTIP 不是设了就生效</h3><p>托盘图标的悬停提示想跟着快捷键变，得先 <code>Shell_NotifyIcon(NIM_SETVERSION)</code> 把协议版本设成 4。之前只加了 <code>NIF_SHOWTIP</code> 标志，提示一直停在创建时那句话，换了快捷键也不更新。</p>
+<h3 id="窗口的-Closing-被自己拦住了"><a href="#窗口的-Closing-被自己拦住了" class="headerlink" title="窗口的 Closing 被自己拦住了"></a>窗口的 Closing 被自己拦住了</h3><p>主窗口默认不关闭、只隐藏，所以在 <code>AppWindow.Closing</code> 里写了 <code>args.Cancel = true</code>。结果托盘菜单点「退出」时窗口关不掉，程序卡在那里。现在的做法是加一个 <code>_allowClose</code> 开关，<code>ExitApplication()</code> 里先置位再 <code>Close()</code>。</p>
+<h3 id="单实例：Mutex-加一个命名事件"><a href="#单实例：Mutex-加一个命名事件" class="headerlink" title="单实例：Mutex 加一个命名事件"></a>单实例：Mutex 加一个命名事件</h3><p>互斥体判断是不是第一个实例。不是的话，往命名事件 <code>Set</code> 一下，第一个实例收到后把面板显示出来，第二个自己退出。中间有个时间窗：第一个实例刚拿到互斥体，事件还没建好。所以第二个实例会重试 20 次，每次间隔 50 毫秒。</p>
+<h3 id="数据格式改过一次"><a href="#数据格式改过一次" class="headerlink" title="数据格式改过一次"></a>数据格式改过一次</h3><p>从 v1 的「一个应用一个分类」改成 v2 的「一个应用多个分类」。旧数据只有 <code>categoryId</code>，加载时如果 <code>categoryIds</code> 是空的，就把 <code>categoryId</code> 挪进去。主题枚举也改过名，旧的 <code>LiquidGlass</code> 映射成暗色、<code>Native</code> 映射成跟随系统，靠一个自定义 <code>JsonConverter</code> 兜住，避免老用户升级后启动失败。</p>
+<h2 id="90-MB-是怎么来的"><a href="#90-MB-是怎么来的" class="headerlink" title="90 MB 是怎么来的"></a>90 MB 是怎么来的</h2><p>WinUI 3 的默认模板会引 <code>Microsoft.WindowsAppSDK</code> 元包。这个包连带拉进 Windows ML（ONNX Runtime 加 DirectML）、AI 和 Widgets，加起来 45 MB 左右。这个项目一行都没用到。</p>
+<p>做法是改引三个子包（WinUI、Runtime、DWrite），再用 <code>MicrosoftWindowsAppSDKFilesExcluded</code> 在 SDK 复制文件之前把 <code>onnxruntime*.dll</code>、<code>DirectML.dll</code>、<code>Microsoft.Windows.AI.*</code>、<code>Microsoft.Windows.Widgets.*</code>、<code>NpuDetect</code> 全部排除。</p>
+<p>其它几刀：<code>SatelliteResourceLanguages</code> 只留 <code>zh-CN</code> 和 <code>en</code>；Release 不生成 PDB；构建后跑一遍 PowerShell，删掉多余的语言目录（每次 84 个）。</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>优化前</th>
+<th>现在</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>精简版发布目录</td>
+<td>约 135 MB</td>
+<td>约 90 MB</td>
+</tr>
+<tr>
+<td>精简版压缩包</td>
+<td>—</td>
+<td>29.7 MB</td>
+</tr>
+<tr>
+<td>自包含版压缩包</td>
+<td>—</td>
+<td>61.3 MB</td>
+</tr>
+</tbody></table>
+<p>顺便记一个 <code>dotnet publish</code> 的坑：未打包的 WinUI 3 应用，publish 只复制 Windows App SDK 的 PRI，不会复制应用自己的 <code>AppManager.pri</code> 和 <code>.xbf</code>。少了它们，发布版启动会在 XAML 解析阶段直接崩。得在 csproj 里加一个 <code>AfterTargets=&quot;Publish&quot;</code> 的 Target 手动补复制。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>改好的1.0.1已经发在 GitHub 上，MIT 协议。两个包：精简版需要装 .NET 8 Desktop Runtime，自包含版解压即用。</p>
+<p>没做完的部分也列一下，免得看着太完整。启动次数和最后启动时间一直在记录，但排序还没用上，现在依然按名称排。没有自动化测试，验证靠 <code>APPMANAGER_TEST_MODE</code> 环境变量跳过热键注册，然后手工点一遍。面板只支持贴底，不能改成居中或者贴左上。</p>
+<p>数据全在本机，一个 JSON 加一个图标目录，删掉就等于恢复出厂。这一点我很确定，因为经常删它来测首次启动。</p>
+<p>仓库： <a href="https://github.com/tianqi-studio/AppManager">tianqi-studio&#x2F;AppManager</a>，遇到问题issue带上 <code>app.log</code> 。</p>
+]]></content>
+      <categories>
+        <category>应用</category>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>WinUI 3</tag>
+        <tag>C#</tag>
+        <tag>Windows</tag>
+        <tag>桌面应用</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2026/11/08/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -91,6 +244,220 @@
         <tag>pcl</tag>
         <tag>pcl ce</tag>
         <tag>破解</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo 博客管理工具：把每天敲的命令做成桌面程序</title>
+    <url>/2026/11/21/hexo-blog-manager/</url>
+    <content><![CDATA[<div class="note warning flat"><p>含大肥鱼生成内容</p>
+</div>
+
+<p>写博客最烦的环节不是写。</p>
+<p>是写完之后的动作：开 PowerShell，cd 到博客目录，<code>hexo clean</code>，<code>hexo generate</code>，等半分钟，再 <code>hexo deploy</code>，再等半分钟。想改个副标题，还得打开 VS Code，翻到 <code>_config.yml</code>，在两百多行里找那个键，顺便小心别把缩进弄坏。</p>
+<p>这两个半分钟里什么都干不了，出错也只有一个退出码可看。于是把整套动作收进一个窗口：能点的就不敲，能预览的就不猜。</p>
+<p>工具做完了，五个页面，一个 exe，双击就能用。</p>
+<span id="more"></span>
+
+<h2 id="它管哪些事"><a href="#它管哪些事" class="headerlink" title="它管哪些事"></a>它管哪些事</h2><table>
+<thead>
+<tr>
+<th>页面</th>
+<th>干什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>站点与目录</td>
+<td>选博客根目录，校验 <code>_config.yml</code> 和 <code>source/_posts</code>，检查 Node 和 hexo 在不在</td>
+</tr>
+<tr>
+<td>文章管理</td>
+<td>列出全部 Markdown，按标题、标签、分类搜，新建、编辑、删除</td>
+</tr>
+<tr>
+<td>命令控制台</td>
+<td>clean &#x2F; generate &#x2F; server &#x2F; deploy 四个按钮，日志实时刷</td>
+</tr>
+<tr>
+<td>配置管理</td>
+<td>17 个常用字段可视化修改，改前自动备份</td>
+</tr>
+<tr>
+<td>发布到 GitHub</td>
+<td>生成、推送、开启 Pages，最后甩给你一个地址</td>
+</tr>
+</tbody></table>
+<p><img src="/img/hexo-blog-manager-site.png" alt="站点与目录页"></p>
+<p>路径存在 <code>%AppData%\HexoBlogManager\settings.json</code>，下次打开自己加载。这个位置是刻意的，不放程序目录，免得到时候装在 Program Files 里写不进去。</p>
+<p>选目录这一步比想象中容易出错，最典型的误选是把 <code>source</code> 当成博客根目录，因为那看起来最像「文章所在的地方」。所以现在如果检测到当前目录没有 <code>_config.yml</code>、但上一级有，会直接告诉你选错层级了，以及正确的根目录是哪个。</p>
+<h2 id="技术上是怎么搭的"><a href="#技术上是怎么搭的" class="headerlink" title="技术上是怎么搭的"></a>技术上是怎么搭的</h2><p>.NET 10 + WPF，C#，<strong>零 NuGet 依赖</strong>。没有 MVVM 框架，没有 YamlDotNet，没有 Markdown 库。你机器上有 .NET SDK 就能编译。</p>
+<p>选 WPF 而不是 Electron，主要是体积和启动速度。同一套功能用 Electron 做，包体积动辄一百多兆，冷启动也要等一会儿；现在这个是自包含单文件，59 MB，双击就出来。代价是 XAML 写起来啰嗦，样式得自己搓。</p>
+<p>32 个 <code>.cs</code> 加 9 个 <code>.xaml</code>，一共约 1.1 万行。分三层：</p>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Models</code></td>
+<td>纯数据：文章元信息、站点信息、设置、发布配置</td>
+</tr>
+<tr>
+<td><code>Services</code></td>
+<td>20 个服务类：进程执行、front-matter 解析、YAML 读写、GitHub API、发布流程</td>
+</tr>
+<tr>
+<td><code>Views</code></td>
+<td>五个页面加一个编辑器窗口</td>
+</tr>
+</tbody></table>
+<p>服务层基本不碰 UI，例外是 Markdown 渲染和 ANSI 配色，这两个天生就跟显示绑在一起，硬拆开反而别扭。</p>
+<h2 id="Windows-上绕不开的几个坑"><a href="#Windows-上绕不开的几个坑" class="headerlink" title="Windows 上绕不开的几个坑"></a>Windows 上绕不开的几个坑</h2><h3 id="中文乱码不是编码设置的问题"><a href="#中文乱码不是编码设置的问题" class="headerlink" title="中文乱码不是编码设置的问题"></a>中文乱码不是编码设置的问题</h3><p>直接 <code>Process.Start(&quot;hexo&quot;, &quot;generate&quot;)</code> 有个麻烦：控制台里中文全是问号。问题不在 <code>Encoding.UTF8</code>，在代码页。Windows 控制台默认 GBK（936），hexo 检测到终端是 GBK 就按 GBK 输出，你按 UTF-8 解码当然乱。</p>
+<p>解法是执行前先切代码页：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> psi = <span class="keyword">new</span> ProcessStartInfo</span><br><span class="line">&#123;</span><br><span class="line">    FileName = <span class="string">&quot;cmd.exe&quot;</span>,</span><br><span class="line">    Arguments = <span class="string">$&quot;/c \&quot;chcp 65001&gt;nul &amp;&amp; <span class="subst">&#123;command&#125;</span>\&quot;&quot;</span>,</span><br><span class="line">    StandardOutputEncoding = Encoding.UTF8,</span><br><span class="line">    StandardErrorEncoding = Encoding.UTF8</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>chcp 65001</code> 是切到 UTF-8，<code>&gt;nul</code> 是把”Active code page: 65001”这行提示吞掉。还有一个细节：hexo 在 Windows 上不是 exe，是 <code>hexo.cmd</code>，所以必须过一层 cmd.exe，不能直接 CreateProcess。</p>
+<h3 id="中文路径和空格路径"><a href="#中文路径和空格路径" class="headerlink" title="中文路径和空格路径"></a>中文路径和空格路径</h3><p>这块反而是最简单的。只要不把路径拼进命令行字符串，而是塞进 <code>WorkingDirectory</code>，空格和中文都不会出问题，不需要加引号也不需要转义。命令行参数才需要处理，路径不需要。</p>
+<p>测试时我专门复制了一份博客到 <code>D:\测试 博客\带空格的博客</code>，中文加空格，一切正常。</p>
+<h3 id="Hexo-的彩色输出会变成乱码"><a href="#Hexo-的彩色输出会变成乱码" class="headerlink" title="Hexo 的彩色输出会变成乱码"></a>Hexo 的彩色输出会变成乱码</h3><p>日志区第一版长这样：</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">[32mINFO[39m  Generated: index.html</span><br></pre></td></tr></table></figure>
+
+<p><code>\u001b[32m</code> 是 ANSI 转义码，控制台认识它，WPF 的 RichTextBox 不认识。写了个 <code>AnsiText</code> 解析器，只处理 SGR 序列（以 <code>m</code> 结尾那种），把 16 色调色板映射成 VS Code 终端的配色，逐段生成彩色的 <code>Run</code>。这样 Hexo 原本的绿色 INFO、黄色 WARN 都还原了。</p>
+<p><img src="/img/hexo-blog-manager-console.png" alt="命令控制台"></p>
+<p>同一个类还提供 <code>Strip</code> 方法去掉全部转义码，用在两处：判断日志级别，以及复制到剪贴板。后者是被逼的，因为提取 <code>hexo server</code> 的预览地址时正则把残留的 <code>[24m</code> 一起抓进去了，地址变成了 <code>http://localhost:4000[24m</code>，点开当然是 404。</p>
+<h3 id="退出码是-0，但其实失败了"><a href="#退出码是-0，但其实失败了" class="headerlink" title="退出码是 0，但其实失败了"></a>退出码是 0，但其实失败了</h3><p>这个坑值得单独说。</p>
+<p><code>hexo deploy</code> 没装 deployer 插件时，日志里明明白白一行红色的 <code>ERROR Deployer not found: git</code>，但进程退出码是 <strong>0</strong>。我一开始只看退出码，界面显示”执行完成”，然后我去刷新网页，发现什么都没变。</p>
+<p>现在改成两条都看：退出码是 0，但日志里出现 <code>ERROR</code> 级别的行，就给黄色警告加一段针对当前命令的排查清单，而不是绿色的”成功”。颜色误导人比报错更烦。</p>
+<h3 id="git-不能放在-public-里"><a href="#git-不能放在-public-里" class="headerlink" title=".git 不能放在 public 里"></a>.git 不能放在 public 里</h3><p>发布功能第一版是这么做的：在 <code>public</code> 目录里 <code>git init</code>，提交，force push 到 gh-pages。跑起来没问题，直到我点了一次”清理缓存”。</p>
+<p><code>hexo clean</code> 会删掉整个 <code>public</code>。而 git 的对象文件是只读的，删除时报 <code>ENOENT</code>，<code>public</code> 目录删到一半卡住。从那以后 clean 就没成功过。</p>
+<p>后来改成跟 <code>hexo-deployer-git</code> 一样的做法：在博客根目录建一个 <code>.deploy_git</code>，把 <code>public</code> 里的文件同步过去，在那边提交推送。<code>public</code> 保持干净，clean 恢复正常，附带好处是提交历史变成增量的，不用每次重建仓库。</p>
+<p>同步逻辑里还有个小坑。清空目标目录时我先删多余文件，再删空目录，结果刚 <code>git init</code> 出来的 <code>.git/objects</code>、<code>.git/refs</code> 是空目录，被当成垃圾删了，后面 commit 直接失败。现在遇到 <code>.git</code> 相关路径一律跳过。</p>
+<h2 id="front-matter-只能改，不能重写"><a href="#front-matter-只能改，不能重写" class="headerlink" title="front-matter 只能改，不能重写"></a>front-matter 只能改，不能重写</h2><p>这一条是我给自己定的硬规矩。</p>
+<p>很多工具的思路是：解析 front-matter 成对象，改完再序列化回去。听着合理，实际会把用户自定义的字段全吃掉。Hexo 的 front-matter 没有固定 schema，Butterfly 认 <code>cover</code>、<code>top_img</code>、<code>sticky</code>，别的主题认别的键，插件还可能有自己的字段。序列化只能输出你认识的那些。</p>
+<p>所以我做的是行级替换。保存时记住每个键对应的原始行块，只替换托管的 7 个字段（title、date、updated、tags、categories、top、comments），其余的连顺序带缩进原样写回：</p>
+<figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">foreach</span> (<span class="built_in">string</span> key <span class="keyword">in</span> existing.Keys)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (ManagedSet.Contains(key))</span><br><span class="line">        AppendManaged(sb, key, meta);          <span class="comment">// 用新值</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (existing.Blocks.TryGetValue(key, <span class="keyword">out</span> <span class="keyword">var</span> block))</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="built_in">string</span> line <span class="keyword">in</span> block)</span><br><span class="line">            sb.Append(line).Append(<span class="string">&#x27;\n&#x27;</span>);      <span class="comment">// 原样回写</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写完一定会补上缺的托管字段，但绝不会碰你的 <code>cover</code>。</p>
+<p>解析这边兼容四种写法：多行列表、行内 <code>[a, b]</code>、单值标量 <code>categories: 未分类</code>、数字 <code>top: 2</code>。单值标量那条是自检抓出来的，原本只认列表，而这种写法在 Hexo 里完全合法，结果就是分类读成空的。</p>
+<p><img src="/img/hexo-blog-manager-editor.png" alt="文章编辑器"></p>
+<p>编辑器左边写右边预览，防抖 350 毫秒。预览是自己写的 Markdown 转 FlowDocument，支持标题、代码块、行内代码、列表、引用、链接、图片。表格和数学公式没做，预览只要能看清文章结构就够了，再多就是另写一个渲染器。拖图片进编辑器会自动存到 <code>source/images/yyyy/MM/</code>，顺手插入链接。</p>
+<p>删除走的是 Windows 回收站，不是直接抹掉。误删还能捞回来，这个比二次确认弹窗实在。</p>
+<h2 id="配置识别：照-Hexo-的合并规则来"><a href="#配置识别：照-Hexo-的合并规则来" class="headerlink" title="配置识别：照 Hexo 的合并规则来"></a>配置识别：照 Hexo 的合并规则来</h2><p>配置页最初是让你自己填的，空白表单。这不对，你的配置明明就在硬盘上躺着。</p>
+<p>但要”自动读取”就得先搞清楚 Hexo 到底读哪些文件。翻了一遍 <code>hexo/dist/hexo/index.js</code> 和 <code>load_theme_config.js</code>，结论是：</p>
+<ol>
+<li><code>_config.yml</code> 是主配置</li>
+<li><code>_config.production.yml</code> 之类是环境覆盖，优先级高于主配置</li>
+<li>主题配置是 <code>deepMerge(主题自带的 _config.yml, 根目录的 _config.butterfly.yml)</code></li>
+</ol>
+<p>第三条最容易踩。根目录那份只是覆盖层，你没写的键继续用主题默认值。所以界面上一个字段显示什么，取决于它在哪一层被定义。</p>
+<p>每个字段带一个状态，一共四种：</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>含义</th>
+<th>保存时</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>已读取</td>
+<td>在要写入的那个文件里读到了</td>
+<td>照常写</td>
+</tr>
+<tr>
+<td>继承</td>
+<td>只存在于主题默认配置里</td>
+<td><strong>不写</strong>，除非你改过</td>
+</tr>
+<tr>
+<td>被覆盖</td>
+<td>值来自 <code>_config.production.yml</code>，改主配置不生效</td>
+<td>提示你改哪儿</td>
+</tr>
+<tr>
+<td>未设置</td>
+<td>哪个文件都没有</td>
+<td>用默认值，不往文件里塞空键</td>
+</tr>
+</tbody></table>
+<p>“不写”这条是硬要求。第一次点保存时，如果从主题默认继承来的那几十项全被写进 <code>_config.butterfly.yml</code>，这个文件会从几十行涨到几百行，以后主题升级还得逐条对照。我用 <code>md5sum</code> 验证过：打开页面直接保存，两个配置文件的哈希一个字节都没变，也不产生备份文件。</p>
+<p><img src="/img/hexo-blog-manager-config.png" alt="配置自动识别"></p>
+<p>读取部分的容错做得比较厚。新写了一个扁平解析器，产出”路径 → 值”的字典，遇到问题只记警告不抛异常：</p>
+<ul>
+<li>Tab 缩进按 2 空格算（YAML 规范禁止 Tab，但很多人手写会混进去）</li>
+<li>缺冒号的行跳过，继续读下一行</li>
+<li>重复键提示后一个会被前一个覆盖</li>
+<li>引号没闭合也能读完</li>
+<li>多行文本块 <code>|</code> 和 <code>&gt;</code> 正常处理</li>
+<li>编码先看 BOM，再试严格 UTF-8，失败按 GB18030 解码</li>
+</ul>
+<p>最后一条是给老博客准备的。国内不少 <code>_config.yml</code> 是 GBK 存的，按 UTF-8 硬读出来中文标题全是方块，现在能正确解码，并在详情里注明”已按 GB18030 解码”。</p>
+<p>写入还是走行级路径编辑，不重新序列化整个 YAML。注释、顺序、缩进都不动，保存前自动备份成 <code>_config.yml.yyyyMMdd-HHmmss.bak</code>，最多留 10 份。</p>
+<p>这里也修过一个旧 bug：布尔值被当成”可能被误读的字符串”加上了引号，<code>nav.fixed: true</code> 被写成 <code>fixed: &quot;true&quot;</code>，在 YAML 里就成了字符串而不是布尔。主题读它的时候判断为真，看着能用，其实语义变了。</p>
+<h2 id="一键发布到-GitHub-Pages"><a href="#一键发布到-GitHub-Pages" class="headerlink" title="一键发布到 GitHub Pages"></a>一键发布到 GitHub Pages</h2><p><img src="/img/hexo-blog-manager-publish.png" alt="发布成功"></p>
+<p>流程是十一步：校验 Token → 查仓库在不在（不在就问你要不要建 public 仓库）→ <code>hexo clean</code> → <code>hexo generate</code> → 同步到 <code>.deploy_git</code> → 写 <code>.nojekyll</code> → add → commit → force push → 开启 Pages → 算站点地址。</p>
+<p>几个决定。</p>
+<p>第一是不用 <code>hexo-deployer-git</code>。那个插件要改你的 <code>_config.yml</code>、要装 npm 包，出错只给一行报错，而且它不管”帮我把 Pages 打开”这一步。自己用 <code>git</code> 命令行加 REST API，主流程 690 行，API 客户端 359 行，出错能说清楚是哪一步。</p>
+<p>第二是 Token 用 Windows DPAPI 加密存盘。<code>%AppData%</code> 下任何程序都能读，明文存等于把仓库写权限送人。DPAPI 的密钥由 Windows 按当前登录用户托管，程序里不存任何东西，配置文件被拷走也解不开。代价是换电脑要重填。</p>
+<p>第三是日志里做 Token 脱敏。推送地址里带 Token，一旦打进日志就等于写进了文本文件。现在日志里永远是 <code>https://***@github.com/...</code>。</p>
+<p>免费账号的 Pages 只能用于 public 仓库，私有仓库会提示但不拦你。刚推完访问 404 是正常的，GitHub 那边要构建一到两分钟。</p>
+<h2 id="测了多少"><a href="#测了多少" class="headerlink" title="测了多少"></a>测了多少</h2><p><code>_selftest</code> 是个独立控制台工程，直接链接主项目的源文件，176 项断言，跑一遍要几分钟。</p>
+<table>
+<thead>
+<tr>
+<th>覆盖范围</th>
+<th>怎么测的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>front-matter 解析与重建</td>
+<td>四种写法、字段保真、中文标题、空 body</td>
+</tr>
+<tr>
+<td>配置识别</td>
+<td>缺失、Tab 缩进、缺冒号、重复键、引号未闭合、GBK、多文件覆盖、主题三处回落</td>
+</tr>
+<tr>
+<td>写入安全</td>
+<td>原样保存不改文件（比 md5）、不产生备份、布尔值不加引号</td>
+</tr>
+<tr>
+<td>发布流程</td>
+<td>本地 bare 仓库当远端，验证提交、force push、<code>.nojekyll</code>、中文文件名</td>
+</tr>
+<tr>
+<td>GitHub API</td>
+<td>本地 mock 服务，验证 401、建仓库、开 Pages、分支一致时不重复创建</td>
+</tr>
+<tr>
+<td>回归</td>
+<td>发布完再执行 <code>hexo clean</code> 是否仍然成功</td>
+</tr>
+</tbody></table>
+<p>发布相关的测试没有碰真实仓库，远端是 <code>git init --bare</code> 出来的本地目录，API 是本机起的一个假服务。整套流程跑通之后，我才拿真实的 GitHub 仓库推了这个项目本身。</p>
+<h2 id="没做完的部分"><a href="#没做完的部分" class="headerlink" title="没做完的部分"></a>没做完的部分</h2><ul>
+<li>预览只到结构级，不渲染表格和数学公式</li>
+<li>编辑已有文章不能改文件名，怕站内链接失效。要改名就重命名文件再打开</li>
+<li>拖进来的图片固定进 <code>source/images/</code>，没跟 <code>post_asset_folder</code> 联动，因为那个开关不是每个博客都开</li>
+<li>只支持 Windows。WPF 决定的，没打算改</li>
+<li>没做 CNAME 可视化，自定义域名得自己改配置</li>
+<li>部署历史会一直在 <code>.deploy_git</code> 里累积，量大了手动删掉，下次发布会重建</li>
+</ul>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>仓库： <a href="https://github.com/tianqi-studio/hexo-blog-manager">tianqi-studio&#x2F;hexo-blog-manager</a>，MIT 协议。Release 里是自包含单文件，59 MB，解压双击就能跑，不依赖 .NET 运行时，但你本机得先有 Node 和 hexo，这个工具是调命令行，不是替代 Hexo。</p>
+<p>如果你也在用 Hexo 加 Butterfly，这个 Hexo 博客管理工具可以拿去试试。跑不起来的话，大概率是路径选错，或者 hexo 不在 PATH 里，页面上的环境自检会直接告诉你缺哪个。</p>
+]]></content>
+      <categories>
+        <category>应用</category>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>C#</tag>
+        <tag>桌面应用</tag>
+        <tag>Hexo</tag>
+        <tag>Butterfly</tag>
+        <tag>WPF</tag>
+        <tag>GitHub Pages</tag>
       </tags>
   </entry>
 </search>
