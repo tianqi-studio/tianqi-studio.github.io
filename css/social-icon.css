@@ -1,0 +1,8 @@
+/* 自定义图片图标（img: 前缀）的悬停旋转，与字体图标行为一致 */
+.social-icon img {
+  transition: transform .3s;
+}
+
+.social-icon:hover img {
+  transform: rotate(360deg);
+}

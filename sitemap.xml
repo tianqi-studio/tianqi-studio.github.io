@@ -83,6 +83,27 @@
 
   
   <url>
+    <loc>https://tianqi-studio.github.io/tags/%E5%85%8D%E8%B4%B9/</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://tianqi-studio.github.io/tags/%E4%BA%91%E7%94%B5%E8%84%91/</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://tianqi-studio.github.io/tags/%E7%94%B5%E8%84%91/</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://tianqi-studio.github.io/tags/WinUI-3/</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
@@ -105,27 +126,6 @@
   
   <url>
     <loc>https://tianqi-studio.github.io/tags/%E6%A1%8C%E9%9D%A2%E5%BA%94%E7%94%A8/</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://tianqi-studio.github.io/tags/%E5%85%8D%E8%B4%B9/</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://tianqi-studio.github.io/tags/%E4%BA%91%E7%94%B5%E8%84%91/</loc>
-    <lastmod>2026-11-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://tianqi-studio.github.io/tags/%E7%94%B5%E8%84%91/</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -190,14 +190,14 @@
 
   
   <url>
-    <loc>https://tianqi-studio.github.io/categories/%E5%BA%94%E7%94%A8/</loc>
+    <loc>https://tianqi-studio.github.io/categories/%E6%9C%8D%E5%8A%A1/</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://tianqi-studio.github.io/categories/%E6%9C%8D%E5%8A%A1/</loc>
+    <loc>https://tianqi-studio.github.io/categories/%E5%BA%94%E7%94%A8/</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
