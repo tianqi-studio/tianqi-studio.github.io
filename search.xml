@@ -129,49 +129,6 @@
       </tags>
   </entry>
   <entry>
-    <title>免费云电脑</title>
-    <url>/2026/11/15/free-cloud-computer/</url>
-    <content><![CDATA[<p><strong>我为大家提供了免费的云电脑，请使用uu远程连接</strong></p>
-<span id="more"></span>
-
-<div class="note danger flat"><p>请勿运行任何病毒与可能危害电脑的程序，请勿删除任何个人与系统文件</p>
-</div>
-
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><blockquote>
-<p>采用的是虚拟机，性能较弱</p>
-</blockquote>
-<p><strong>内存：</strong> 16GB<br><strong>CPU：</strong> i7-11370H<br><strong>GPU：</strong> RTX 4060 Laptop<br><strong>硬盘：</strong> 60GB</p>
-<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><p><strong>系统版本：</strong> Windows 10 专业工作站版（已激活）<br><strong>软件：</strong> 覆盖常用软件</p>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><strong>可用时间：</strong> 周末&#x2F;节假日 下午3:00~晚上8:00 <em>（可能会有波动）</em><br><strong>设备码：</strong><br><strong>密码：</strong> </p>
-]]></content>
-      <categories>
-        <category>服务</category>
-      </categories>
-      <tags>
-        <tag>免费</tag>
-        <tag>云电脑</tag>
-        <tag>电脑</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2026/11/08/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>Hexo 博客管理工具：把每天敲的命令做成桌面程序</title>
     <url>/2026/11/21/hexo-blog-manager/</url>
     <content><![CDATA[<div class="note warning flat"><p>含大肥鱼生成内容</p>
@@ -386,6 +343,24 @@
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2026/11/08/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>我解除了pcl的下载限制！</title>
     <url>/2026/11/14/unlock-pclce-download/</url>
     <content><![CDATA[<p><strong>我解除了pcl的下载限制！</strong></p>
@@ -458,6 +433,31 @@
         <tag>pcl</tag>
         <tag>pcl ce</tag>
         <tag>破解</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>免费云电脑</title>
+    <url>/2026/11/15/free-cloud-computer/</url>
+    <content><![CDATA[<p><strong>我为大家提供了免费的云电脑，请使用uu远程连接</strong></p>
+<span id="more"></span>
+
+<div class="note danger flat"><p>请勿运行任何病毒与可能危害电脑的程序，请勿删除任何个人与系统文件</p>
+</div>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><blockquote>
+<p>采用的是虚拟机，性能较弱</p>
+</blockquote>
+<p><strong>内存：</strong> 16GB<br><strong>CPU：</strong> i7-11370H<br><strong>GPU：</strong> RTX 4060 Laptop<br><strong>硬盘：</strong> 60GB</p>
+<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><p><strong>系统版本：</strong> Windows 10 专业工作站版（已激活）<br><strong>软件：</strong> 覆盖常用软件</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><strong>可用时间：</strong> 周末&#x2F;节假日 下午3:00~晚上8:00 <em>（可能会有波动）</em><br><strong>设备码：</strong><br><strong>密码：</strong> </p>
+]]></content>
+      <categories>
+        <category>服务</category>
+      </categories>
+      <tags>
+        <tag>免费</tag>
+        <tag>云电脑</tag>
+        <tag>电脑</tag>
       </tags>
   </entry>
 </search>
